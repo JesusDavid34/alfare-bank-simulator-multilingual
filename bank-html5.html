@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Bancario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            width: 400px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        .container h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .container input, .container select {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: border 0.3s ease;
+        }
+
+        .container input:focus, .container select:focus {
+            border: 2px solid #2196F3;
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            margin: 15px auto;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador Bancario</h1>
+        <input type="password" id="key" placeholder="Ingrese clave">
+        <input type="text" id="ci" placeholder="Documento de identidad">
+        <select id="type">
+            <option value="">Selecciona tipo de cuenta</option>
+            <option value="1">Ahorro</option>
+            <option value="2">Corriente</option>
+        </select>
+        <input type="number" id="mount" placeholder="Monto">
+        <button class="btn" onclick="simulate()">Procesar</button>
+        <div class="result">
+            <img id="icon" class="icon" src="" alt="">
+            <p id="message"></p>
+        </div>
+    </div>
+
+    <script>
+        function simulate() {
+            const key = document.getElementById('key').value.trim();
+            const ci = document.getElementById('ci').value.trim();
+            const type = document.getElementById('type').value.trim();
+            const mount = document.getElementById('mount').value.trim();
+
+            if (!key || !ci || !type || !mount) {
+                alert("Por favor, completa todos los campos antes de continuar.");
+                return;
+            }
+
+            const outcomes = [
+                { message: "DENEGADA", icon: "assets/denegada.ico", sound: "sound/denegada.mp3", color: "red" },
+                { message: "APROBADA", icon: "assets/aprobada.ico", sound: "sound/aprobada.mp3", color: "green" },
+                { message: "BLOQUEO DE DATOS", icon: "assets/bloqueoDatos.ico", sound: "sound/bloqueoDatos.mp3", color: "orange" },
+                { message: "FONDO INSUFICIENTE", icon: "assets/fondoInsuficiente.ico", sound: "sound/fondoInsuficiente.mp3", color: "red" }
+            ];
+
+            const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+            const messageElement = document.getElementById('message');
+            const iconElement = document.getElementById('icon');
+            const resultElement = document.querySelector('.result');
+
+            // Mostrar mensaje e ícono
+            messageElement.textContent = randomOutcome.message;
+            messageElement.style.color = randomOutcome.color;
+            iconElement.src = randomOutcome.icon;
+            iconElement.style.display = 'block';
+
+            // Mostrar con animación
+            resultElement.style.opacity = 1;
+
+            // Reproducir sonido
+            try {
+                const audio = new Audio(randomOutcome.sound);
+                audio.play().catch((error) => {
+                    console.error("Error reproduciendo el sonido:", error);
+                    alert("No se pudo reproducir el sonido. Verifica la ruta del archivo.");
+                });
+            } catch (error) {
+                console.error("Error en la configuración del audio:", error);
+                alert("Ocurrió un error con la reproducción del sonido.");
+            }
+        }
+    </script>
+</body>
+</html>
