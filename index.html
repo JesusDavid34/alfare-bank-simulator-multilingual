@@ -137,13 +137,13 @@
             const iconElement = document.getElementById('icon');
             const resultElement = document.querySelector('.result');
 
-            // Mostrar mensaje e ícono
+            // Mostrar mensaje e Ã­cono
             messageElement.textContent = randomOutcome.message;
             messageElement.style.color = randomOutcome.color;
             iconElement.src = randomOutcome.icon;
             iconElement.style.display = 'block';
 
-            // Mostrar con animación
+            // Mostrar con animaciÃ³n
             resultElement.style.opacity = 1;
 
             // Reproducir sonido
@@ -154,8 +154,8 @@
                     alert("No se pudo reproducir el sonido. Verifica la ruta del archivo.");
                 });
             } catch (error) {
-                console.error("Error en la configuración del audio:", error);
-                alert("Ocurrió un error con la reproducción del sonido.");
+                console.error("Error en la configuraciÃ³n del audio:", error);
+                alert("OcurriÃ³ un error con la reproducciÃ³n del sonido.");
             }
         }
     </script>
